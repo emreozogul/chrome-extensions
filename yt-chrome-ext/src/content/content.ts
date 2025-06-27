@@ -122,41 +122,6 @@ const getYouTubePlayer = (): YouTubePlayer | null => {
   }
 };
 
-// Wait for YouTube player to be ready
-const waitForYouTubePlayer = (maxAttempts = 20, interval = 1000): Promise<boolean> => {
-  console.log(`Content: Waiting for YouTube player (max ${maxAttempts} attempts, interval ${interval}ms)`);
-  return new Promise((resolve) => {
-    let attempts = 0;
-
-    const checkForPlayer = () => {
-      attempts++;
-      console.log(`Content: Checking for YouTube player (attempt ${attempts}/${maxAttempts})`);
-
-      // Check if we're actually on a YouTube watch page
-      if (!window.location.pathname.includes('/watch')) {
-        console.log('Content: Not on a YouTube watch page, stopping player detection');
-        resolve(false);
-        return;
-      }
-
-      const player = getYouTubePlayer();
-
-      if (player) {
-        console.log('Content: YouTube player found successfully!');
-        resolve(true);
-      } else if (attempts < maxAttempts) {
-        console.log(`Content: YouTube player not found yet, trying again in ${interval}ms`);
-        setTimeout(checkForPlayer, interval);
-      } else {
-        console.error(`Content: Timed out waiting for YouTube player after ${maxAttempts} attempts`);
-        resolve(false);
-      }
-    };
-
-    checkForPlayer();
-  });
-};
-
 // Get current video ID
 const getVideoId = (): string => {
   const urlParams = new URLSearchParams(window.location.search);
