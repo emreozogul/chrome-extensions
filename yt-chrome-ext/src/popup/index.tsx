@@ -63,12 +63,16 @@ const App: React.FC = () => {
                     if (response && response.success) {
                         setMoments(response.data || []);
                     } else {
-                        setError(response?.error || 'Failed to load moments');
+                        const errorMessage = response?.error || 'Failed to load moments';
+                        console.error('Error loading moments:', errorMessage);
+                        setError(errorMessage);
                     }
                     setLoading(false);
                 });
             } catch (err) {
-                setError(`Error loading moments: ${err instanceof Error ? err.message : String(err)}`);
+                const errorMessage = `Error loading moments: ${err instanceof Error ? err.message : String(err)}`;
+                console.error(errorMessage, err);
+                setError(errorMessage);
                 setLoading(false);
             }
         };
